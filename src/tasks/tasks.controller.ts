@@ -1,8 +1,9 @@
-import { Controller, Get , Post, Put, Delete, Param, Body} from "@nestjs/common";
+import { Controller, Get , Post, Put, Delete, Param, Body, UsePipes, ValidationPipe} from "@nestjs/common";
 import { TasksService } from "./tasks.service";
 import { CreateTask } from "./dto/create-task.dto";
 import { GetTask } from "./dto/get-task.dto";
 import { UpdateTask } from "dist/tasks/dto/update-task.dto";
+import { TaskStatusValidationPipe } from "./pipes/task-status-validation.pipe";
 
 @Controller('/task')
 export class TasksController{ 
@@ -20,12 +21,13 @@ export class TasksController{
   }
 
   @Post('')
+  @UsePipes(ValidationPipe)
   async createNewTask(@Body() createTask : CreateTask) { 
     return await this.tasksService.create(createTask)
   }
 
-  @Put('/:id')
-  async updateTaks(@Param('id') id : number, @Body() createTask : CreateTask ) { 
+  @Put('/:id')  
+  async updateTaks(@Param('id') id : number, @Body(TaskStatusValidationPipe) createTask : CreateTask ) { 
     const updateTaks: UpdateTask = { id, ...createTask}
     return await this.tasksService.update(updateTaks)
   }

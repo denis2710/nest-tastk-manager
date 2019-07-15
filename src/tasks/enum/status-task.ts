@@ -1,0 +1,5 @@
+export enum StatusTask { 
+  PENDENTE = 'PENDENTE',
+  EM_EXECUCAO = 'EM_EXECUCAO',
+  FINALIZADO = 'FINALIZADO'
+}
